@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
+// Context
+import { UserContext } from "../../App";
 
 export const Header = ({ setHeaderHeight }) => {
   const headerRef = useRef(null);
@@ -8,6 +11,13 @@ export const Header = ({ setHeaderHeight }) => {
   useEffect(() => {
     setHeaderHeight(headerRef.current?.clientHeight);
   }, []);
+
+  const { user, setUser } = useContext(UserContext);
+
+  const signOut = () => {
+    localStorage.removeItem("swe-jobs-user-token");
+    setUser(null);
+  };
 
   return (
     <Container ref={headerRef}>
@@ -17,8 +27,17 @@ export const Header = ({ setHeaderHeight }) => {
         <Nav to="/resume">Upload Resume</Nav>
       </div>
       <div>
-        <Button to="/sign-in">Sign In</Button>
-        <Button to="/sign-up">Sign Up</Button>
+        {user ? (
+          <div>
+            <Button to="/profile">Profile</Button>
+            <button onClick={signOut}>Sign Out</button>
+          </div>
+        ) : (
+          <div>
+            <Button to="/sign-in">Sign In</Button>
+            <Button to="/sign-up">Sign Up</Button>
+          </div>
+        )}
       </div>
     </Container>
   );

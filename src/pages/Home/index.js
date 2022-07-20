@@ -19,7 +19,7 @@ export const Home = () => (
         </Benefit>
         <Benefit>
           <Icon icon={["fas", "memo"]} m="0px 10px 0px 0px" />
-          Upload your resume find better matches
+          Upload your resume to find better matches
         </Benefit>
         <Benefit>
           <Icon icon={["fas", "sack-dollar"]} m="0px 10px 0px 0px" />

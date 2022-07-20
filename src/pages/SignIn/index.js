@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 import styled from "styled-components";
 
+// API
+import * as authAPI from "../../api/auth";
+
+// Context
+import { UserContext } from "../../App";
+
 export const SignIn = () => {
-  const [username, setUsername] = useState("");
+  const { user, setUser } = useContext(UserContext);
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signIn = () => {
-    console.log({ username, password });
+  const signIn = async () => {
+    try {
+      const token = await authAPI.signIn({ email, password });
+      localStorage.setItem("swe-jobs-user-token", token);
+      setUser(token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  return (
+  return user ? (
+    <Navigate replace to="/jobs" />
+  ) : (
     <Wrapper>
       <Container>
         <Header>Sign In</Header>
-        <Label>Username</Label>
+        <Label>Email</Label>
         <Input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Label>Password</Label>
         <Input
